@@ -371,6 +371,11 @@ export class OpenAIConverter extends BaseConverter {
             }
         }
 
+        // 顶层 reasoning_effort → output_config.effort：per-model 档位校验/回退由 provider 层（kiro-effort.js）负责，避免在转换层提前把 xhigh/max 压成 high
+        if (typeof openaiRequest.reasoning_effort === 'string' && openaiRequest.reasoning_effort.trim()) {
+            claudeRequest.output_config = { effort: openaiRequest.reasoning_effort.trim().toLowerCase() };
+        }
+
         return claudeRequest;
     }
 
