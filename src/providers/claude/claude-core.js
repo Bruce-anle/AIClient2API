@@ -57,6 +57,8 @@ export class ClaudeApiService {
      * @returns {Promise<object>} API response data.
      */
     async callApi(endpoint, body, isRetry = false, retryCount = 0) {
+        // reasoning_effort 为内部方言字段，不在 Anthropic 线上协议中；转发前剥离
+        delete body.reasoning_effort;
         const maxRetries = this.config.REQUEST_MAX_RETRIES || 3;
         const baseDelay = this.config.REQUEST_BASE_DELAY || 1000; // 1 second base delay
 
@@ -129,6 +131,8 @@ export class ClaudeApiService {
      * @returns {AsyncIterable<object>} API response stream.
      */
     async *streamApi(endpoint, body, isRetry = false, retryCount = 0) {
+        // reasoning_effort 为内部方言字段，不在 Anthropic 线上协议中；转发前剥离
+        delete body.reasoning_effort;
         const maxRetries = this.config.REQUEST_MAX_RETRIES || 3;
         const baseDelay = this.config.REQUEST_BASE_DELAY || 1000; // 1 second base delay
 
